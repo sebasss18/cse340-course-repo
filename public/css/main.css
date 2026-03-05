@@ -9,16 +9,19 @@ html, body {
 
 nav {
     margin-bottom: 30px;
-    animation: slideDown 1s ease forwards;
 }
 
 nav ul {
     list-style: none;
     margin: 0;
     padding: 0;
-    display: flex;
+    display: none;
     flex-direction: column;
     gap: 10px;
+}
+
+nav ul.open {
+    display: flex;
 }
 
 nav a {
@@ -66,32 +69,45 @@ img {
     100% { opacity: 1; transform: translateY(0); }
 }
 
-@media screen and (min-width: 992px) {
-    body {
-        padding: 40px 80px;
-    }
+#hambutton {
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    position: relative;
+}
 
-    nav ul {
-        flex-direction: row;
-        gap: 25px;
-    }
+#hambutton::before,
+#hambutton::after {
+    content: "";
+    position: absolute;
+    left: 8px;
+    width: 24px;
+    height: 3px;
+    background: #333;
+    border-radius: 2px;
+    transition: 0.3s;
+}
 
-    nav a {
-        width: auto;
-        padding: 10px 16px;
-    }
+#hambutton::before {
+    top: 12px;
+    box-shadow: 0 8px 0 #333;
+}
 
-    h1 {
-        font-size: 2.5rem;
-    }
+#hambutton::after {
+    top: 28px;
+}
 
-    h2 {
-        font-size: 2rem;
-    }
+#hambutton.open::before {
+    transform: rotate(45deg);
+    top: 18px;
+    box-shadow: none;
+}
 
-    h3 {
-        font-size: 1.5rem;
-    }
+#hambutton.open::after {
+    transform: rotate(-45deg);
+    top: 18px;
 }
 
 footer {

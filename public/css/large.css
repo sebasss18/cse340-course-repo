@@ -64,4 +64,14 @@
         max-width: 100%;
         height: auto;
     }
+
+    #hambutton {
+        display: none;
+    }
+
+    nav ul {
+        display: flex;
+        flex-direction: row;
+        gap: 25px;
+    }
 }
