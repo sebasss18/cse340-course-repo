@@ -1,0 +1,59 @@
+IA: Welcome! Just to be clear from the start, this is a coaching session, not a test. It is perfectly okay—and even encouraged—to say “I don’t know” or “I made a mistake.” That’s the fastest way we’ll learn today. 👍 I’m here as your Learning Coach and Software Mentor, and this is a safe learning space where mistakes are totally fine and part of the process. Before we start discussing your Week 2 assignment topics, I just want to confirm something so I address you correctly. First question: What name would you like me to call you during this session?
+
+Sebas: Sebas
+
+IA: Great, nice to meet you, Sebas! And just a quick reminder—this is a safe learning space and not a test. That’s exactly how we learn. 👍 Let’s start with Topic 1: Express Routing. Since I can’t see your files directly here in chat, please paste a snippet from your server.js (or main server file) that shows how you defined at least one Express route.
+
+Sebas: app.get(’/’, async (req, res) => { const title = ‘Home’; res.render(‘home’, { title }); });
+
+IA: Thanks for sharing that snippet, Sebas 👍 That’s a nice clean Express route. Just to restate it briefly so we’re looking at the same thing: app.get(’/’, async (req, res) => { const title = ‘Home’; res.render(‘home’, { title }); }); This route listens for a GET request to the root URL (/), then it renders the home EJS view and passes a variable called title to the template. My question: In your own words, what does res.render(‘home’, { title }) do, and why did you choose to pass the title variable into the view?
+
+Sebas: It renders the EJS home file.
+
+IA: Good start, Sebas 👍 You’re absolutely right that it renders the EJS home file. Remember, this line does two important things: 1. It renders the home.ejs template. 2. It sends data to the template, in this case the variable title, so it can be used inside the EJS page like: <%= title %> This way, the page can dynamically display “Home” instead of hardcoding it in the template. My question: Why do you think it might be better to pass title from the route instead of hardcoding “Home” directly inside the EJS file?
+
+Sebas: Because that makes my code reusable and easier to read, maintain, and to change.
+
+IA: Exactly, Sebas—that’s a great reason. 👍 Passing variables like title from the route makes your code reusable, easier to maintain, and separates server logic from presentation.
+
+IA: Now let’s move to Topic 2: JavaScript Language Principles. Could you paste one JavaScript function from your project (not a trivial one like a + b) and briefly tell me what it does?
+
+Sebas: const hambutton = document.querySelector(”#hambutton”); const navigation = document.querySelector(“nav ul”); hambutton.addEventListener(“click”, () => { hambutton.classList.toggle(“open”); navigation.classList.toggle(“open”); }); It’s a hambutton. It just adds an eventListener to create a button that hides the nav with css, and shows it when you click.
+
+IA: Nice example, Sebas 👍 That’s a good real frontend JavaScript behavior. This code uses document.querySelector() to select elements from the DOM, adds a click event listener to the hamburger button, and when the button is clicked, it toggles the open class on both the button and the navigation. Your JavaScript is basically triggering a CSS state change, which is a really common pattern for responsive menus. In your event listener you wrote: () => { hambutton.classList.toggle(“open”); navigation.classList.toggle(“open”); } My question: Why do you think an arrow function () => {} works well here instead of writing a traditional function like function() {}?
+
+Sebas: Its faster and more readable.
+
+IA: Good thinking, Sebas 👍 Those are two common reasons developers choose arrow functions. They are concise, remove the function keyword, and are common in callbacks like addEventListener.
+
+IA: Now let’s move to Topic 3: EJS Partials and Pages. Could you paste a small EJS snippet from one of your pages that includes a partial (for example something like a header, nav, or footer), and tell me why you chose to use a partial there?
+
+Sebas:      <%= title %>         Home Organizations Projects Categories  
+
+IA: Nice, Sebas 👍 Thanks for sharing that snippet. Typically, something like your navigation would be placed in a partial (for example nav.ejs) so that every page can reuse it instead of repeating the same HTML. In your project, do you have a partial like header, nav, or footer that you include in multiple pages, and why is that better than copying the same HTML into every EJS page?
+
+Sebas: Yes, the footer and header are EJS partials. I think it is better because I don’t have to repeat the header and footer every time, and that way I can avoid making mistakes or repeating things. It’s easier to maintain and easier to change things.
+
+IA: Exactly, Sebas—that’s a very solid explanation. 👍 Using EJS partials for things like the header and footer helps because: you avoid repeating code across many pages, it reduces mistakes since you only maintain one version, if you change something it updates everywhere, and it keeps the project organized and easier to maintain.
+
+IA: Now let’s move to the final area: Topic 4 — Frontend CSS. Since your hamburger menu relies on CSS classes like open, it would be great to look at the CSS that controls the navigation visibility or layout. Could you paste a CSS snippet from your project that controls the navigation or the hamburger menu, and explain what it does?
+
+Sebas: nav ul { list-style: none; margin: 0; padding: 0; display: none; flex-direction: column; gap: 10px; } This hides the nav links.
+
+IA: Perfect, Sebas 👍 That snippet clearly shows how CSS controls the visibility and layout of your navigation links. list-style: none removes the default bullet points, margin: 0; padding: 0 removes default spacing from the , display: none hides the navigation links by default, flex-direction: column; gap: 10px sets the layout to vertical with spacing between links when the menu is displayed. The JavaScript toggles a class that likely changes display: none to display: flex to show the menu, which is a classic CSS + JS toggle pattern for responsive menus. How would you modify this CSS so that the navigation automatically shows horizontally on larger screens, but still hides behind the hamburger button on smaller screens?
+
+Sebas: I used a media query to do that. I just hid the hambutton and displayed the nav ul as flex with a flex direction of row and added some gap.
+
+IA: Exactly, Sebas! 👍 That’s exactly how responsive design with media queries works. Example: @media (min-width: 768px) { #hambutton { display: none; } nav ul { display: flex; flex-direction: row; gap: 20px; } } On small screens, nav ul is hidden and #hambutton is visible. On larger screens, the media query shows the nav horizontally and hides the hamburger button.
+
+IA: ✅ We’ve now covered all four topics: Express Routing – routes and passing variables to EJS, JavaScript Principles – arrow functions, event listeners, DOM selection, EJS Partials – reusable header/footer for maintainability, Frontend CSS – hiding/showing nav with classes and media queries. Sebas, before we wrap up, do you feel confident with these four areas, or is there one where you’d like a bit more clarification or examples?
+
+Sebas: Yes I feel confident, I’ve been struggling a little bit with JS, but I’ll keep it up, thank you.
+
+IA: That’s great to hear, Sebas! 🎉 It’s totally normal to struggle with JavaScript at first. The fact that you’re sticking with it, experimenting, and asking questions shows you’re learning the right way. Keep practicing with small interactive pieces, like your hamburger menu, and you’ll see steady improvement. You’ve done a really solid job today covering Express, JS, EJS, and CSS. That’s a full stack of skills in one session—very impressive. If you want, I can also give you a tiny challenge for your JS skills to reinforce what we talked about, so you keep building confidence. Do you want me to do that?
+
+Sebas: No, it’s fine. I’ll practice by my own.
+
+IA: Perfect, Sebas! 👍 That’s a great mindset—practicing on your own is exactly how these skills stick. Keep building small features like your hamburger menu. Every little project reinforces your understanding. You’re making excellent progress—keep it up! 🚀
+
+⸻
