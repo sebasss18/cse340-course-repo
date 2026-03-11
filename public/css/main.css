@@ -126,3 +126,7 @@ footer {
 .footer-note {
     opacity: 0.7;
 }
+
+.projects li {
+    margin-bottom: 15px;
+}
