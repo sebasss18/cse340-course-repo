@@ -39,3 +39,23 @@ VALUES (1, 'Argonaut Planter Boxes', 'We will build planter boxes at Argonaut El
 	(3, 'Food Pantry Setup', 'We will set up a food pantry to support low-income families in our community', 'Local Elementary School', '2027-01-10'),
 	(3, 'Book Donation Campaign', 'We will collect and donate books to underprivileged children', 'Local Library', '2027-02-15'),
 	(3, 'Toys for Tots Drive', 'We will organize a toy drive to provide gifts for children in need during the holidays', 'City Hall', '2027-03-01');
+
+CREATE TABLE categories (
+	categories_id SERIAL PRIMARY KEY NOT NULL,
+	c_name VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE project_categories (
+	project_id INT NOT NULL,
+	categories_id INT NOT NULL,
+	PRIMARY KEY (project_id, categories_id),
+	FOREIGN KEY (project_id) REFERENCES service_projects(project_id),
+    FOREIGN KEY (categories_id) REFERENCES categories(categories_id)
+);
+
+INSERT INTO categories (c_name)
+VALUES 
+('Environmental'),
+('Educational'),
+('Community Service'),
+('Health and Wellness');
