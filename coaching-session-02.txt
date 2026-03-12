@@ -1,0 +1,116 @@
+IA: Welcome! I’m your Learning Coach and Software Mentor.
+IA: Welcome! Just to be clear from the start, this is a coaching session, not a test. It is perfectly okay—and even encouraged—to say “I don’t know” or “I made a mistake.” That’s the fastest way we’ll learn today. 🙂
+IA: Before we start, I want to make sure this feels like a safe learning space where you can think out loud, make mistakes, and explore ideas without pressure.
+IA: I also want to confirm something first:
+IA: Is your name Sebas, or do you prefer to be called something else?
+
+Sebas: Yes, I’m Sebas
+
+IA: Great, nice to meet you Sebas 🙂. I’m glad you’re here.
+IA: Just a quick reminder: this is a coaching conversation, not an evaluation. If something didn’t work in your code or you’re unsure why you wrote something a certain way, that’s actually the best thing we can discuss.
+IA: Since we’re working in a chat interface, when we talk about code I’ll ask you to paste the relevant snippet here so we can look at it together.
+IA: Let’s start with Topic 1: Relational Database Design and Structure.
+IA: Question:
+IA: Could you paste one SQL query from your project (preferably one that joins tables or retrieves meaningful data) and briefly explain what tables it uses and what the query is supposed to return?
+
+Sebas: INSERT INTO organizations (name, description, contact_email, logo_filename) VALUES (‘BrightFuture Builders’, ‘A nonprofit focused on improving community infrastructure through sustainable construction projects.’, ‘info@brightfuturebuilders.org’, ‘brightfuture-logo.png’), (‘GreenHarvest Growers’, ‘An urban farming collective promoting food sustainability and education in local neighborhoods.’, ‘contact@greenharvest.org’, ‘greenharvest-logo.png’), (‘UnityServe Volunteers’, ‘A volunteer coordination group supporting local charities and service initiatives.’, ‘hello@unityserve.org’, ‘unityserve-logo.png’);
+
+Sebas: this insert the information in the organizations table
+
+IA: Thanks for sharing that, Sebas 👍
+IA: Your SQL query is inserting three records into the organizations table with fields like name, description, contact_email, and logo_filename. That tells me your table is probably being used to store basic information about organizations that will later be displayed on the website, possibly with their logos and contact details.
+IA: So your query is essentially seeding the database with initial data that your application can retrieve and render later.
+IA: Now I want to understand how you designed the database, not just the insert.
+IA: Question:
+IA: What other tables exist in your database (besides organizations), and how are they related to the organizations table?
+
+Sebas: service_projects i’ts another table that is related with organizations, the service projects can be from one of the three organizations, and there’s 5 projects for each organization
+
+IA: Good explanation, Sebas 👍 That already shows you’re thinking about the relationship between the tables.
+IA: From what you described, it sounds like:
+IA: One organization can have many service projects
+IA: Each service project belongs to one organization
+IA: That’s a one-to-many relationship (organizations → service_projects), which is a very common relational database structure.
+IA: Usually this is implemented with something like:
+IA: organizations.organization_id → primary key
+IA: service_projects.organization_id → foreign key
+IA: That way each project “points” to the organization it belongs to.
+IA: Now I’d like to see how you retrieve data using that relationship, because that’s where relational design really shows up in queries.
+IA: Question:
+IA: Can you paste one SQL query from your project that retrieves data (for example a SELECT query, possibly with a JOIN between organizations and service_projects)?
+
+Sebas: SELECT organization_id, name, description, contact_email, logo_filename FROM public.organizations;
+
+Sebas: this is the getAllOrganizations function that retrieves data so I can use that in my EJS
+
+IA: Nice, Sebas 👍 Thanks for sharing that.
+IA: Your query: SELECT organization_id, name, description, contact_email, logo_filename FROM public.organizations;
+IA: retrieves all organizations from the organizations table, including their ID, name, description, email, and logo filename. Then your application can pass that data to EJS to render it in the UI.
+IA: That’s a good example of a data retrieval query used by the server.
+IA: Now let’s move to Topic 2: Server-Side Data Access Logic (Node.js). This is about the function in your Node.js code that actually runs that SQL query and returns the results to the rest of your application.
+IA: Question:
+IA: Can you paste the Node.js function that executes this SQL query (the function that connects to the database and returns the organizations)?
+
+Sebas: yes, is actually what I did here
+
+Sebas: import db from ‘./db.js’
+const getAllOrganizations = async() => {
+const query = SELECT organization_id, name, description, contact_email, logo_filename FROM public.organizations;
+const result = await db.query(query);
+return result.rows;
+}
+export {getAllOrganizations}
+
+IA: Nice, Sebas — this is a solid example of server-side data access logic 👍
+IA: Your function: import db from ‘./db.js’ const getAllOrganizations = async() => { const query = SELECT organization_id, name, description, contact_email, logo_filename FROM public.organizations;; const result = await db.query(query); return result.rows; } export {getAllOrganizations}
+IA: What’s happening here conceptually:
+IA: db is your database connection module
+IA: getAllOrganizations() is an async function
+IA: It sends the SQL query to the database using db.query()
+IA: The database returns a result object
+IA: result.rows contains the actual data records
+IA: That data can then be sent to Express routes and eventually to EJS
+IA: This is a clean separation where: SQL lives in the model/data layer, the route just calls the function
+IA: Now let’s move to Topic 3: Express Server Logic and Routing, where this function gets used.
+IA: Question:
+IA: Can you paste the Express route handler where getAllOrganizations() is called and the data is sent to the EJS template?
+
+Sebas: app.get(’/organizations’, async (req, res) => { const organizations = await getAllOrganizations(); const title = ‘Our Partner Organizations’; res.render(‘organizations’, { title, organizations }); });
+
+IA: Great, Sebas 👍 That’s a very clear Express route.
+IA: Your route: app.get(’/organizations’, async (req, res) => { const organizations = await getAllOrganizations(); const title = ‘Our Partner Organizations’; res.render(‘organizations’, { title, organizations }); });
+IA: What’s happening in the flow:
+IA: A user visits /organizations in the browser.
+IA: Express matches the route with app.get(’/organizations’, …).
+IA: The server calls getAllOrganizations(), which runs the SQL query.
+IA: The database returns the organization data.
+IA: The server sends that data to the EJS template using res.render().
+IA: The template receives title and organizations.
+IA: Then EJS uses that data to generate the HTML shown to the user.
+IA: Now let’s move to the final topic: Topic 4 – Client-Side Rendering with EJS.
+IA: Question:
+IA: Can you paste one line or small snippet from your EJS template where you display the organizations data (for example inside a loop or showing a property like organization.name)?
+
+Sebas: <% organizations.forEach(organization => { %> <%= organization.name %>: <%= organization.contact_email %> <% }); %>
+
+IA: Nice work, Sebas 👍 This is a great example of EJS client-side rendering.
+IA: Your snippet: <% organizations.forEach(organization => { %>   <%= organization.name %>: <%= organization.contact_email %>  <% }); %>
+IA: What this does: <% … %> runs JavaScript logic inside the template. organizations.forEach(…) loops through the array sent from Express. <%= … %> outputs values into the HTML. Each organization becomes a list item with its logo, name, and email.
+IA: So the full data flow in your project looks like this: PostgreSQL → stores organizations data, Node.js function → getAllOrganizations() retrieves it, Express route → /organizations calls the function, EJS template → loops through the data and renders HTML for the browser.
+IA: That’s exactly the full stack flow this assignment was trying to teach.
+IA: We’ve now talked through all four required areas:
+IA: ✅ Relational database structure
+IA: ✅ Node.js data access logic
+IA: ✅ Express routing
+IA: ✅ EJS rendering
+IA: Before we wrap up, I want to reflect on your understanding.
+IA: Question:
+IA: If the database had no organizations stored, what do you think your EJS page would display when the forEach loop runs?
+
+Sebas: It wouldn’t display nothing, my forEach loop retrieves data from my database in postgre, not directly but the data is not in vs code
+
+IA: Exactly, Sebas — you’ve got the idea! ✅
+IA: Since organizations comes from the database, if there are no rows returned, your forEach loop simply has nothing to iterate over, so it produces no  items in the rendered HTML. The template itself still renders the surrounding HTML, like the  (if you have one), but the list would be empty.
+IA: This is actually a good place where people often add a conditional message, like: <% if (organizations.length === 0) { %> No organizations found. <% } else { %> <% organizations.forEach(organization => { %>   <%= organization.name %>: <%= organization.contact_email %>  <% }); %> <% } %>
+IA: That way, the page always shows meaningful feedback, even if the database is empty.
+IA: Since we’ve now covered all four topics and the full flow, you’ve essentially completed your Week 2 discussion!
