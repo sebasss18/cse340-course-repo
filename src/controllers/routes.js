@@ -4,7 +4,11 @@ import { showHomePage } from './index.js';
 import { showOrganizationsPage } from './organizations.js';
 import { showProjectsPage } from './projects.js';
 import { showCategoriesPage } from './categories.js';
+
 import { testErrorPage } from './errors.js';
+
+import { showOrganizationDetailsPage } from './organizations.js';
+
 
 const router = express.Router();
 
@@ -14,5 +18,7 @@ router.get('/projects', showProjectsPage);
 router.get('/categories', showCategoriesPage);
 
 router.get('/test-error', testErrorPage);
+
+router.get('/organization/:id', showOrganizationDetailsPage);
 
 export default router;
