@@ -1,0 +1,235 @@
+IA Coach: Welcome! Just to be clear from the start, this is a coaching session, not a test. It is perfectly okay—and even encouraged—to say "I don't know" or "I made a mistake." That's the fastest way we'll learn today.  
+Before we dive in—what name would you like me to use for you during this session?
+
+And just to set expectations: I’ll ask you to paste code snippets here when we talk about specific parts, and we’ll go step by step together 👍
+
+Sebastian: Sebastian
+
+IA Coach: Perfect—thanks, Sebastian. This is a safe space, so feel free to share anything, even if you're unsure about it.
+
+Let’s start with Topic 1: Models.  
+Could you paste a model function from your project that receives a parameter and uses it in an SQL query?
+
+Sebastian:  
+const getCategoryById = async (id) => {  
+    const query =   
+        SELECT categories_id, c_name  
+        FROM public.categories  
+        WHERE categories_id = $1;  
+    ;  
+
+    const result = await db.query(query, [id]);  
+    return result.rows[0];  
+}
+
+IA Coach: Nice, thanks for sharing that, Sebastian—this is a clean and solid example 👍  
+Let’s dig into your thinking a bit:
+
+Why did you choose to use $1 with [id] instead of directly inserting the id into the SQL string?
+
+Sebastian: It's for security, a placeholder to not expose the id and avoid SQL injecting
+
+IA Coach: Exactly—that’s the key idea 👍 You’re using a parameterized query, which prevents SQL injection because the database treats the value as data, not executable SQL.
+
+Quick refinement: it’s not so much about “hiding the id,” but about ensuring it can’t change the structure of the query—even if someone sends malicious input.
+
+Now let’s build on that:
+
+What would happen if instead you wrote something like this (string interpolation)? Why would that be dangerous?
+
+Sebastian: Thats when SQL injection comes into place, exposing the id could be dangerous because someone could send a malicious query like deleting everything
+
+IA Coach: Exactly—you’ve got the right idea. If you directly inject values into the query string, a malicious user could send something like 1; DROP TABLE categories; and it would be executed as part of the SQL. That’s the real danger—changing the intent of your query, not just “seeing the id.”
+
+Nice job on that 👍
+
+Let’s move to Topic 2: Views.  
+Could you paste an EJS snippet from your project where you insert dynamic data into a link?
+
+Sebastian:  
+<%- include('partials/header') %>  
+
+<main>  
+    <h1><%= category.c_name %></h1>  
+    <% projects.forEach(project => { %>  
+        <li>  
+            <a href="/project/<%= project.project_id %>">  
+                <%= project.title%>  
+            </a>  
+        </li>  
+    <% }); %>  
+</main>  
+
+<%- include('partials/footer') %>
+
+IA Coach: Nice, Sebastian—this is a solid EJS snippet 👍 You’re correctly looping and building dynamic links using the project_id.
+
+Let’s zoom in on your decision-making here:
+
+Why did you choose to put the project_id in the URL path instead of using a query parameter like /project?id=...?
+
+Sebastian: its for searching something specific, not filter
+
+IA Coach: You’re very close—that’s a good intuition 👍  
+More precisely, using /project/:id is ideal when the ID uniquely identifies a single resource. It makes the URL cleaner and more RESTful, while query parameters are better for filtering or optional data.
+
+Now let’s connect this to the backend.
+
+For Topic 3: Controllers:  
+Could you paste a route handler that receives that project_id using req.params?
+
+Sebastian:  
+router.get('/category/:id', showCategoryPage);
+
+IA Coach: Nice—that’s a good start 👍  
+To really understand your controller logic, I want to see what happens inside that handler.
+
+Sebastian:  
+const showCategoryPage = async (req, res) => {  
+    const id = req.params.id;  
+
+    const category = await getCategoryById(id);  
+    const projects = await getProjectsByCategory(id);  
+
+    const title = category.c_name;  
+
+    res.render('category', {  
+        title,  
+        category,  
+        projects  
+    });  
+};
+
+IA Coach: Nice, Sebastian—this is a clean controller 👍  
+Let’s think a bit deeper about robustness:
+
+What do you think would happen if getCategoryById(id) returns undefined?
+
+Sebastian: It wouldnt find nothing, I got that error actually and it just doesnt load the page
+
+IA Coach: Exactly—that’s a real-world issue 👍  
+Right now, if category is undefined, this line:
+
+const title = category.c_name;
+
+will crash your app.
+
+This is a perfect transition into Topic 4: Error Handling.
+
+Could you show how you currently handle errors?
+
+Sebastian:  
+const testErrorPage = (req, res, next) => {  
+    const err = new Error('This is a test error');  
+    err.status = 500;  
+    next(err);  
+};
+
+IA Coach: Nice—good start 👍  
+Now what do you have to actually catch and display that error?
+
+Sebastian:  
+// Global error handler  
+app.use((err, req, res, next) => {  
+    console.error('Error occurred:', err.message);  
+    console.error('Stack trace:', err.stack);  
+    
+    const status = err.status || 500;  
+    const template = status === 404 ? '404' : '500';  
+    
+    const context = {  
+        title: status === 404 ? 'Page Not Found' : 'Server Error',  
+        error: err.message,  
+        stack: err.stack  
+    };  
+    
+    res.status(status).render(errors/${template}, context);  
+});
+
+IA Coach: This is really solid 👍  
+But I’m going to push back a bit:
+
+Your global handler only works if you pass an error to next(err). Right now, if category is undefined, you’re not doing that.
+
+So let’s fix it.
+
+What would you add right after:
+
+const category = await getCategoryById(id);
+
+to trigger a 404?
+
+Sebastian: maybe a try block
+
+IA Coach: Good thought—but not quite 👍  
+This is an expected case, not an exception.
+
+Try an if instead.
+
+Sebastian: well I would use the if statement to verify if the object is empty or not
+
+IA Coach: Exactly 👍  
+So:
+
+if (!category) {  
+    // trigger 404  
+}
+
+What goes inside?
+
+Sebastian:  
+const err = new Error('Category not found');  
+err.status = 404;  
+return next(err);
+
+IA Coach: Perfect 💯  
+That’s exactly the missing piece.
+
+Now your flow is:
+
+Controller checks data  
+If missing → next(err) with 404  
+Global handler renders error page  
+
+Before we wrap up:
+
+If getProjectsByCategory(id) fails (DB crash), how would you handle that?
+
+Sebastian: In that case It would be the case for a try catch
+
+IA Coach: Exactly 👍  
+
+So your final structure becomes:
+
+const showCategoryPage = async (req, res, next) => {  
+    try {  
+        const id = req.params.id;  
+
+        const category = await getCategoryById(id);  
+
+        if (!category) {  
+            const err = new Error('Category not found');  
+            err.status = 404;  
+            return next(err);  
+        }  
+
+        const projects = await getProjectsByCategory(id);  
+
+        res.render('category', {  
+            title: category.c_name,  
+            category,  
+            projects  
+        });  
+
+    } catch (error) {  
+        error.status = 500;  
+        next(error);  
+    }  
+};
+
+That’s a clean, production-style pattern:
+
+Validate → 404  
+Catch failures → 500  
+
+You did really well in this session—your understanding is solid, you just needed to refine how errors flow through your app 👍
