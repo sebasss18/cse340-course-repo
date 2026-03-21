@@ -59,3 +59,27 @@ VALUES
 ('Educational'),
 ('Community Service'),
 ('Health and Wellness');
+
+INSERT INTO project_categories (project_id, categories_id)
+VALUES
+-- organization 1: BrightFuture Builders
+(1, 1), (1, 3),           -- Argonaut Planter Boxes → Environmental + Community Service
+(2, 1), (2, 3),           -- Rinconada Park Fences → Environmental + Community Service
+(3, 1), (3, 3),           -- Rinconada Park Playground → Environmental + Community Service
+(4, 1), (4, 3),           -- Community Garden Shed → Environmental + Community Service
+(5, 2), (5, 3),           -- Local Library Renovation → Educational + Community Service
+
+-- organization 2: GreenHarvest Growers
+(6, 1), (6, 2),           -- Urban Farm Workshop → Environmental + Educational
+(7, 1), (7, 2),           -- Pollinator Garden → Environmental + Educational
+(8, 1), (8, 2),           -- Hydroponic System Installation → Environmental + Educational
+(9, 1), (9, 3),           -- Community Composting Program → Environmental + Community Service
+(10, 1), (10, 3), (10, 4),-- Farm-to-Table Dinner → Environmental + Community Service + Health & Wellness
+
+-- organization 3: UnityServe Volunteers
+(11, 3), (11, 4),          -- Annual Charity Walk → Community Service + Health & Wellness
+(12, 3), (12, 4),          -- Clothing Drive → Community Service + Health & Wellness
+(13, 3), (13, 4),          -- Food Pantry Setup → Community Service + Health & Wellness
+(14, 2), (14, 3),          -- Book Donation Campaign → Educational + Community Service
+(15, 3), (15, 4);          -- Toys for Tots Drive → Community Service + Health & Wellness
+

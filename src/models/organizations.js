@@ -14,7 +14,7 @@ const getAllOrganizations = async() => {
 const getOrganizationDetails = async (organizationId) => {
       const query = `
         SELECT organization_id, name, description, contact_email, logo_filename
-        FROM organization
+        FROM organizations
         WHERE organization_id = $1;
     `;
 

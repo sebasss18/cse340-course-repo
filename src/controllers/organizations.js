@@ -13,7 +13,7 @@ const showOrganizationDetailsPage = async (req, res) => {
     const projects = await getProjectsByOrganizationId(organizationId);
     const title = 'Organization Details';
 
-    res.render('organization', {title, organizationsDetails, projects});
+    res.render('organization', {title, organizationDetails, projects});
 }
 
 export {showOrganizationsPage, showOrganizationDetailsPage}
