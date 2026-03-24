@@ -223,3 +223,77 @@ button:active {
 .add-organization-button a:active {
     transform: scale(0.97);
 }
+
+/* FLASH MESSAGE*/
+
+.alert {
+    padding: 16px 18px;
+    margin-bottom: 20px;
+    border-radius: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    animation: fadeSlide 0.5s ease forwards;
+    position: relative;
+    overflow: hidden;
+}
+
+.alert::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 6px;
+    height: 100%;
+    border-radius: 14px 0 0 14px;
+}
+
+.alert.success {
+    background-color: #e6f9f0;
+    color: #1e7e5a;
+}
+.alert.success::before {
+    background-color: #28a745;
+}
+
+.alert.error {
+    background-color: #fdecea;
+    color: #b02a37;
+}
+.alert.error::before {
+    background-color: #dc3545;
+}
+
+.alert.warning {
+    background-color: #fff8e6;
+    color: #a07800;
+}
+.alert.warning::before {
+    background-color: #ffc107;
+}
+
+.alert.info {
+    background-color: #e8f6fb;
+    color: #0b7285;
+}
+.alert.info::before {
+    background-color: #17a2b8;
+}
+
+.alert:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+}
+
+@keyframes fadeSlide {
+    0% {
+        opacity: 0;
+        transform: translateY(10px) scale(0.98);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
