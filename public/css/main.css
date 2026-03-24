@@ -131,6 +131,10 @@ footer {
     margin-bottom: 15px;
 }
 
+ul {
+    list-style: none;
+}
+
 form {
     max-width: 600px;
     margin: 20px auto;
@@ -196,4 +200,26 @@ button:hover {
 
 button:active {
     transform: scale(0.98);
+}
+
+.add-organization-button a {
+    display: inline-block;
+    padding: 12px 20px;
+    background-color: #2692ff;
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 15px rgba(0, 102, 204, 0.2);
+}
+
+.add-organization-button a:hover {
+    background-color: #4294e6;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0, 102, 204, 0.3);
+}
+
+.add-organization-button a:active {
+    transform: scale(0.97);
 }
