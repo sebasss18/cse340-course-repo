@@ -130,3 +130,70 @@ footer {
 .projects li {
     margin-bottom: 15px;
 }
+
+form {
+    max-width: 600px;
+    margin: 20px auto;
+    background-color: rgb(206, 243, 255);
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    animation: fadeUp 0.8s ease forwards;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #333;
+}
+
+input,
+textarea {
+    padding: 12px;
+    border-radius: 15px;
+    border: 1px solid rgba(0,0,0,0.15);
+    font-size: 1rem;
+    font-family: inherit;
+    transition: all 0.3s ease;
+    background-color: #ffffff;
+}
+
+textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+input:focus,
+textarea:focus {
+    outline: none;
+    border-color: #0066cc;
+    box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.15);
+}
+
+button {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 15px;
+    background-color: #0066cc;
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    background-color: #0052a3;
+    transform: translateY(-2px);
+}
+
+button:active {
+    transform: scale(0.98);
+}
