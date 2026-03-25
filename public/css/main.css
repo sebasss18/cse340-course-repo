@@ -206,7 +206,6 @@ button:active {
     display: inline-block;
     padding: 12px 20px;
     background-color: #2692ff;
-    color: white;
     text-decoration: none;
     font-weight: 600;
     border-radius: 20px;
@@ -216,6 +215,7 @@ button:active {
 
 .add-organization-button a:hover {
     background-color: #4294e6;
+    color: white !important;
     transform: translateY(-2px);
     box-shadow: 0 10px 20px rgba(0, 102, 204, 0.3);
 }
@@ -295,5 +295,66 @@ button:active {
     100% {
         opacity: 1;
         transform: translateY(0) scale(1);
+    }
+}
+
+/*ORGANIZATION CARDS*/
+
+.organizations-cards {
+    display: grid;
+    gap: 20px;
+    padding: 0;
+}
+
+.organizations-cards li {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    background: #daf4ff;
+    padding: 18px 20px;
+    border-radius: 18px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+    transition: all 0.25s ease;
+    list-style: none;
+    flex-wrap: wrap;
+    font-size: 0.95rem;
+    color: #555;
+}
+
+.organizations-cards li:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.12);
+}
+
+.organizations-cards img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 15px;
+    background: #cee2f7;
+    padding: 5px;
+}
+
+.organizations-cards a {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #222;
+    text-decoration: none;
+    width: 100%;
+}
+
+.organizations-cards a:hover {
+    color: #0066cc;
+}
+
+@media (min-width: 768px) {
+    .organizations-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1100px) {
+    .organizations-cards {
+        grid-template-columns: repeat(3, 1fr);
     }
 }

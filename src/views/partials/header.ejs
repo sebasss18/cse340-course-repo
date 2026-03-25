@@ -24,7 +24,7 @@
         <% if (messages[type].length > 0) { %>
             
                 <% messages[type].forEach(msg => { %>
-                    <%= msg %>
+                    <div class="alert <%= type %>"><%= msg %></div>
                 <% }); %>
             
         <% } %>
