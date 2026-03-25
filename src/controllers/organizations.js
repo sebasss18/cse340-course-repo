@@ -1,4 +1,4 @@
-import { getAllOrganizations, getOrganizationDetails } from "../models/organizations.js";
+import { getAllOrganizations, getOrganizationDetails, updateOrganization } from "../models/organizations.js";
 import { getProjectsByOrganizationId } from "../models/projects.js";
 import { createOrganization } from "../models/organizations.js";
 import { body, validationResult } from 'express-validator';
@@ -67,4 +67,32 @@ const organizationValidation = [
         .withMessage('Please provide a valid email address')
 ];
 
-export {showOrganizationsPage, showOrganizationDetailsPage, showNewOrganizationForm, processNewOrganizationForm, organizationValidation}
+const showEditOrganizationForm = async (req, res) => {
+    const organizationId = req.params.id;
+    const organizationDetails = await getOrganizationDetails(organizationId);
+
+    const title = 'Edit Organization';
+    res.render('edit-organization', { title, organizationDetails });
+}
+
+const processEditOrganizationForm = async (req, res) => {
+    const organizationId = req.params.id;
+    const {name, description, contactEmail, logoFilename} = req.body;
+
+    const results = validationResult(req);
+    if (!results.isEmpty()) {
+        results.array().forEach((error) => {
+            req.flash('error', error.msg);
+        });
+
+        return res.redirect('/edit-organization/' + req.params.id);
+    }
+
+    await updateOrganization(organizationId, name, description, contactEmail, logoFilename);
+
+    req.flash('success', 'Organization updated successfully')
+
+    res.redirect(`/organization/${organizationId}`);
+}
+
+export {showOrganizationsPage, showOrganizationDetailsPage, showNewOrganizationForm, processNewOrganizationForm, organizationValidation, showEditOrganizationForm, processEditOrganizationForm}

@@ -6,6 +6,9 @@
     <img src="/images/<%= organizationDetails.logo_filename %>" alt="<%= organizationDetails.name %> logo">
 
     <p>Description: <%= organizationDetails.description %></p>
+    <div class="edit-organization-button">
+        <p><a href="/edit-organization/<%= organizationDetails.organization_id %>">Edit Organization</a></p>
+    </div>
 
     <h3>Service Projects</h3>
     <ul>
