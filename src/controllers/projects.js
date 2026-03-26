@@ -1,5 +1,6 @@
 import { getAllProjects, getUpComingProjects, getProjectsDetails, createProject } from "../models/projects.js";
 import { getAllOrganizations } from "../models/organizations.js";
+import { body, validationResult } from 'express-validator';
 
 const projectValidation = [
     body('title')
