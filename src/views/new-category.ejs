@@ -2,7 +2,7 @@
 <main>
     <h1><%= title %></h1>
 
-    <form action="/new-category/<%= category.categories_id %>" method="POST">
+    <form action="/new-category" method="POST">
         <div class="form-group">
             <label for="c_name">Category Name</label>
             <input
@@ -11,11 +11,10 @@
                 name="c_name"
                 maxlength="100"
                 required
-                value="<%= category.c_name %>"
             />
         </div>
 
-        <button type="submit">Update Category</button>
+        <button type="submit">Create Category</button>
     </form>
 </main>
 <%- include('partials/footer') %>
