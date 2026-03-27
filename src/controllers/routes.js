@@ -3,12 +3,13 @@ import express from 'express';
 import { showHomePage } from './index.js';
 import { showNewOrganizationForm, showOrganizationsPage, showOrganizationDetailsPage, processNewOrganizationForm, organizationValidation, showEditOrganizationForm, processEditOrganizationForm } from './organizations.js';
 import { showProjectsPage, showNewProjectForm, processNewProjectForm, projectValidation, showEditProjectForm, processEditProjectForm } from './projects.js';
-import { showCategoriesPage, showCategoryPage, showAssignCategoriesForm, processAssignCategoriesForm } from './categories.js';
+import { showCategoriesPage, showCategoryPage, showAssignCategoriesForm, processAssignCategoriesForm, showNewCategoriesForm, processNewCategoriesForm, showEditCategoriesForm, processEditCategoriesForm, categoryValidation } from './categories.js';
 
 import { testErrorPage } from './errors.js';
 
 //import { showOrganizationDetailsPage } from './organizations.js';
 import { showProjectDetailsPage } from './projects.js';
+import { validationResult } from 'express-validator';
 // import { getCategoryById } from '../models/categories.js';
 //import { processNewOrganizationForm } from './organizations.js';
 
@@ -34,5 +35,9 @@ router.get('/assign-categories/:projectId', showAssignCategoriesForm);
 router.post('/assign-categories/:projectId', processAssignCategoriesForm);
 router.get('/edit-project/:projectId', showEditProjectForm);
 router.post('/edit-project/:projectId', projectValidation, processEditProjectForm);
+router.get('/new-category', showNewCategoriesForm);
+router.post('/new-category', categoryValidation, processNewCategoriesForm);
+router.get('/edit-category/:categoryId', showEditCategoriesForm);
+router.post('/edit-category/:categoryId', categoryValidation, processEditCategoriesForm);
 
 export default router;
