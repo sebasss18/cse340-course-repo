@@ -42,7 +42,7 @@
             id="date"
             name="date"
             required
-            value="<%= projectDetails.date %>"
+            value="<%= new Date(projectDetails.date).toISOString().split('T')[0] %>"
         >
     </div>
 
