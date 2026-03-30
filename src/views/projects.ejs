@@ -13,7 +13,7 @@
                     <a href="/organization/<%= project.organization_id %>">
                         <%= project.organization_name %>
                     </a>
-                    - <%= new Date(project.date).toLocaleDateString() %>
+                    <%= new Date(project.date).toLocaleDateString() %>
                 )
             </li>
         <% }); %>
