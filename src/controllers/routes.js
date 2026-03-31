@@ -1,18 +1,57 @@
 import express from 'express';
-
-import { showHomePage } from './index.js';
-import { showNewOrganizationForm, showOrganizationsPage, showOrganizationDetailsPage, processNewOrganizationForm, organizationValidation, showEditOrganizationForm, processEditOrganizationForm } from './organizations.js';
-import { showProjectsPage, showNewProjectForm, processNewProjectForm, projectValidation, showEditProjectForm, processEditProjectForm } from './projects.js';
-import { showCategoriesPage, showCategoryPage, showAssignCategoriesForm, processAssignCategoriesForm, showNewCategoriesForm, processNewCategoriesForm, showEditCategoriesForm, processEditCategoriesForm, categoryValidation } from './categories.js';
-
-import { testErrorPage } from './errors.js';
-
-//import { showOrganizationDetailsPage } from './organizations.js';
-import { showProjectDetailsPage } from './projects.js';
 import { validationResult } from 'express-validator';
-// import { getCategoryById } from '../models/categories.js';
-//import { processNewOrganizationForm } from './organizations.js';
 
+// Home
+import { showHomePage } from './index.js';
+
+// Organizations
+import {
+  showOrganizationsPage,
+  showOrganizationDetailsPage,
+  showNewOrganizationForm,
+  processNewOrganizationForm,
+  showEditOrganizationForm,
+  processEditOrganizationForm,
+  organizationValidation
+} from './organizations.js';
+
+// Projects
+import {
+  showProjectsPage,
+  showProjectDetailsPage,
+  showNewProjectForm,
+  processNewProjectForm,
+  showEditProjectForm,
+  processEditProjectForm,
+  projectValidation
+} from './projects.js';
+
+// Categories
+import {
+  showCategoriesPage,
+  showCategoryPage,
+  showAssignCategoriesForm,
+  processAssignCategoriesForm,
+  showNewCategoriesForm,
+  processNewCategoriesForm,
+  showEditCategoriesForm,
+  processEditCategoriesForm,
+  categoryValidation
+} from './categories.js';
+
+// Users
+import {
+  showUserRegistrationForm,
+  processUserRegistrationForm,
+  showLoginForm,
+  processLoginForm,
+  processLogout,
+  requireLogin,
+  showDashboard
+} from './users.js';
+
+// Errors
+import { testErrorPage } from './errors.js';
 const router = express.Router();
 
 router.get('/', showHomePage);
@@ -39,5 +78,11 @@ router.get('/new-category', showNewCategoriesForm);
 router.post('/new-category', categoryValidation, processNewCategoriesForm);
 router.get('/edit-category/:categoryId', showEditCategoriesForm);
 router.post('/edit-category/:categoryId', categoryValidation, processEditCategoriesForm);
+router.get('/register', showUserRegistrationForm);
+router.post('/register', processUserRegistrationForm);
+router.get('/login', showLoginForm);
+router.post('/login', processLoginForm);
+router.get('/logout', processLogout);
+router.get('/dashboard', requireLogin, showDashboard);
 
 export default router;
