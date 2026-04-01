@@ -7,9 +7,11 @@
         <% organizations.forEach(organization => { %>
             <li><img src="/images/<%= organization.logo_filename %>" alt="<%= organization.name %> logo"><a href="/organization/<%= organization.organization_id %>"><%= organization.name %></a> <%= organization.contact_email %></li>
             <% }); %>
-            <div class="add-organization-button">
-                <p><a href="/new-organization">Add a new organization</a></p>
-            </div>
+            <% if (user && user.role_name === 'admin') { %>
+                <div class="add-organization-button">
+                    <p><a href="/new-organization">Add a new organization</a></p>
+                </div>            
+            <% } %>
     </ul>
 
 </main>
