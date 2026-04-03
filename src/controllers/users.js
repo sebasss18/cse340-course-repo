@@ -24,7 +24,7 @@ const processUserRegistrationForm = async (req, res) => {
 };
 
 const showLoginForm = async(req, res) => {
-    res.render('Login', {title: 'Login'});
+    res.render('login', {title: 'Login'});
 };
 
 const processLoginForm = async (req, res) => {
