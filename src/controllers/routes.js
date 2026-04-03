@@ -48,7 +48,8 @@ import {
   processLogout,
   requireLogin,
   showDashboard,
-  requireRole
+  requireRole,
+  showAllUsers
 } from './users.js';
 
 // Errors
@@ -96,6 +97,7 @@ router.post('/register', processUserRegistrationForm);
 router.get('/login', showLoginForm);
 router.post('/login', processLoginForm);
 router.get('/logout', processLogout);
+router.get('/users', requireRole('admin'), showAllUsers);
 
 // DASHBOARD
 router.get('/dashboard', requireLogin, showDashboard);

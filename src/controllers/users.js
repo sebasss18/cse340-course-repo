@@ -1,4 +1,4 @@
-import { createUser, authenticateUser } from "../models/users.js";
+import { createUser, authenticateUser, getAllUsers } from "../models/users.js";
 import bcrypt from "bcrypt";
 
 const showUserRegistrationForm = async (req, res) => {
@@ -73,7 +73,7 @@ const showDashboard = (req, res) => {
     const user = req.session.user;
     res.render('dashboard', { 
         title: 'Dashboard',
-        name: user.name,
+        role: user.role_name,
         email: user.email
     });
 };
@@ -94,5 +94,17 @@ const requireRole = (role) => {
     };
 };
 
+const showAllUsers = async (req, res) => {
+    try {
+        const users = await getAllUsers();
 
-export {showUserRegistrationForm, processUserRegistrationForm, showLoginForm, processLoginForm, processLogout, requireLogin, showDashboard, requireRole};
+        res.render('users', { title: 'All Users', users });
+
+    } catch (error) {
+        console.error('Error fetching users:', error);
+        req.flash('error', 'Unable to load users.');
+        res.redirect('/dashboard');
+    }
+};
+
+export {showUserRegistrationForm, processUserRegistrationForm, showLoginForm, processLoginForm, processLogout, requireLogin, showDashboard, requireRole, showAllUsers};
