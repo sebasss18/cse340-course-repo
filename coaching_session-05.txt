@@ -1,0 +1,243 @@
+IA: Welcome! Just to be clear from the start, this is a coaching session, not a test. It is perfectly okay—and even encouraged—to say "I don't know" or "I made a mistake." That's the fastest way we'll learn today.
+
+IA: Before we dive in—are you Sebastián (sebas)? And just so you know, this is a safe space to explore your code and decisions openly.
+
+IA: To get us started with Topic 1 (Registration and Password Hashing), please paste a non-trivial code snippet from your project where you handle user registration and password hashing (for example, using bcrypt).
+
+Sebas: Yes im Sebastian, here's the code
+
+const processUserRegistrationForm = async (req, res) => {
+    const { name, email, password} = req.body;
+
+    try {
+        const salt = await bcrypt.genSalt(10)
+        const passwordHash = await bcrypt.hash(password, salt);
+
+        const userId = await createUser(name, email, passwordHash);
+
+        req.flash('success', 'registration successfull! Please log in')
+        res.redirect('/')
+    } catch (error) {
+        console.error('Error registering user:', error);
+        req.flash('error', 'An error ocurred during registration. Please try again.')
+        res.redirect('/register');
+    }
+};
+
+Sebas: this function process the information about the user in the registration form
+
+IA: Nice to meet you, Sebastián — and thanks for sharing your code, this is a solid real-world example 👍
+
+IA: You’re doing several important things right here:
+
+- Using bcrypt.genSalt(10) (good practice, not hardcoding hashes)
+- Hashing the password before storing it (critical for security)
+- Separating concerns by calling createUser(...)
+- Handling errors with try/catch and giving user feedback
+
+IA: Now let’s dig a bit deeper into your understanding:
+
+👉 My one question for you:
+Why do we hash the password with bcrypt before saving it in the database instead of just storing the plain password directly?
+
+Sebas: It's for security, hashing the password makes user accounts safer, if someone gets in the database, they couldn't get the passwords
+
+IA: Exactly—you’re on the right track 👍
+
+IA: Hashing protects users because even if someone gains access to the database, they won’t see the actual passwords. And since bcrypt is designed to be slow and uses salting, it makes it much harder to reverse or brute-force those hashes.
+
+IA: Let me push your understanding just a bit deeper:
+
+👉 My one question for you:
+What role does the salt play in bcrypt.genSalt(10), and why is it important instead of just hashing the password alone?
+
+Sebas: it generates the random hash password, the 10 means it will has it 10 times, it's a 10 times iteration
+
+IA: Good attempt—you’re circling the idea, but let’s tighten it up a bit because this detail really matters for security.
+
+IA: A salt is actually a random value added to the password before hashing, not the hash itself. Its main purpose is to make sure that:
+
+- Two users with the same password don’t end up with the same hash
+- Attackers can’t use precomputed tables (like rainbow tables) to crack passwords efficiently
+
+IA: The “10” in genSalt(10) refers to the cost factor (work factor), which controls how computationally expensive the hashing process is—not literally “hashing 10 times,” but increasing the effort required to compute the hash.
+
+IA: So you're partially right about iteration/cost, but it's more about making hashing slower and harder to attack, not repeating it in a simple loop.
+
+IA: Let’s move forward to Topic 2 (Login and Sessions) 🔐
+
+👉 My one question for you:
+Can you paste your login function code where you verify the password and create the session (e.g., using req.session)?
+
+Sebas: Oh yeah, I got a little confused there, but I understand.
+
+const processLoginForm = async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        const user = await authenticateUser(email, password);
+        if (user) {
+            req.session.user = user;
+            req.flash('success', 'Login successful!');
+
+            if (res.locals.NODE_ENV === 'development') {
+                console.log('User logged in:', user);
+            }
+            res.redirect('/dashboard');
+
+        } else {
+            req.flash('error', 'Invalid email or password.');
+            res.redirect('/login');
+        }
+    } catch (error) {
+        console.error('Error during login:', error);
+        req.flash('error', 'An error occurred during login. Please try again.');
+        res.redirect('/login');
+    }
+};
+
+IA: Nice, Sebastián—this is a clean login flow 👍
+
+IA: A couple of things you’re doing well here:
+
+- Not storing anything in the session until authentication succeeds
+- Handling both success and failure paths clearly
+- Using flash messages for feedback
+
+IA: Now, the key piece in login systems is what happens inside authenticateUser(email, password).
+
+👉 My one question for you:
+Inside your authenticateUser function, how are you verifying that the password entered by the user matches the hashed password stored in the database?
+
+Sebas:
+const authenticateUser = async (email, password) => {
+    const user = await findUserByEmail(email);
+    if (!user) {
+        return null;
+    }
+
+    const isValid = await verifyPassword(password, user.password_hash);
+
+    if (!isValid) {
+        return null;
+    }
+
+    delete user.password_hash;
+
+    return user;
+};
+
+IA: This is a strong implementation, Sebastián 👍
+
+IA: You’re following a really solid authentication flow:
+
+- Fetch user by email
+- Fail fast if user doesn’t exist
+- Verify password separately
+- Remove password_hash before returning the user
+
+IA: 👉 My one question for you:
+Can you show me your verifyPassword function, and explain what it’s doing step by step?
+
+Sebas:
+const verifyPassword = async (password, passwordHash) => {
+    return bcrypt.compare(password, passwordHash);
+};
+
+IA: Perfect—that’s exactly what we want to see 👍
+
+IA: This is clean and correct:
+
+- bcrypt.compare compares plain password with hash
+- It internally handles the salt
+- Returns true or false
+
+IA: Let’s move into Topic 3 (Protected Access Middleware) 🔐
+
+👉 My one question for you:
+Can you paste your middleware code for requireLogin or requireRole, and explain what it does?
+
+Sebas:
+const requireRole = (role) => {
+
+    return (req, res, next) => {
+        if (!req.session || !req.session.user) {
+            req.flash('error', 'You must be logged in to access this page.');
+            return res.redirect('/login');
+        }
+
+        if (req.session.user.role_name !== role) {
+            req.flash('error', 'You do not have permission to access this page.');
+            return res.redirect('/');
+        }
+        next();
+    };
+};
+
+Sebas: this is a function factory
+
+IA: Yes—this is a function factory, and a good one 👍
+
+IA: You’re doing several important things correctly:
+
+- Checking if the user is logged in
+- Enforcing role-based access
+- Using early returns
+- Returning middleware dynamically
+
+IA: 👉 My one question for you:
+If you already hide admin links in the UI, why is this middleware still absolutely necessary for security?
+
+Sebas: Because the UI hided links can be bypassed
+
+IA: Exactly—that’s the key idea 👍
+
+IA: Hiding links in the UI is just cosmetic, not security. Anyone can:
+
+- Manually type the URL
+- Use tools like Postman or curl
+- Modify requests
+
+IA: Your middleware is what actually enforces security.
+
+IA: Let’s move to Topic 4 (Protected Access Links and Navigation)
+
+👉 My one question for you:
+Can you paste a snippet from your EJS where you conditionally show/hide navigation links?
+
+Sebas:
+<% if (user && user.role_name === 'admin') { %>
+    <div class="add-organization-button">
+        <p><a href="/new-organization">Add a new organization</a></p>
+    </div>            
+<% } %>
+
+IA: Nice, Sebastián—this is exactly the kind of conditional rendering we’re looking for 👍
+
+IA: You’re doing this correctly:
+
+- Checking if user exists
+- Checking the role
+- Rendering conditionally
+
+IA: 👉 My one question for you:
+How does this EJS check relate to req.session.user from your backend?
+
+Sebas: It is directly using the info my req session stores by getting the role_name from the user
+
+IA: You’re very close—that’s the right idea 👍 but let’s make it precise.
+
+IA: The user in EJS does NOT directly access req.session.
+
+IA: Instead, the flow is:
+
+req.session.user → res.locals.user → user in EJS
+
+IA: This happens because you expose the session data to the view.
+
+IA: You’ve now walked through all four core topics:
+Password hashing ✅
+Login & sessions ✅
+Protected middleware ✅
+Role-based UI rendering ✅
+That’s a complete authentication + authorization flow 👏
